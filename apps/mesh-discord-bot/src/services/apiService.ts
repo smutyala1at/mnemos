@@ -1,13 +1,21 @@
 export async function askAI(question: string) {
-    const response = await fetch(`${process.env.API_BASE_URL}/api/ask-mesh-ai`, {
+    const baseUrl = process.env.API_BASE_URL;
+    const apiKey = process.env.API_KEY;
+    const body = JSON.stringify({ question: question });
+
+    if(!baseUrl || !apiKey) {
+        throw new Error("API_BASE_URL and API_KEY must be defined in .env")
+    }
+
+    console.log("making backend call");
+    
+    const response = await fetch(`${baseUrl}/api/ask-mesh-ai`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "x-api-key": process.env.API_KEY!
+            "x-api-key": apiKey!
         },
-        body: JSON.stringify({
-            question: question
-        }),
+        body
     });
 
     if(!response.ok) {
