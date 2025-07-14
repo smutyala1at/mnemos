@@ -4,6 +4,10 @@ import { Command } from "../utils/types";
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN as string);
 const clientId = process.env.CLIENT_ID as string;
 
+if(!clientId) {
+    throw new Error("CLIENT_ID must be defined in .env")
+}
+
 export async function registerSlashCommands(commands: Command[]) {
     try {
         const existingCommands = await rest.get(

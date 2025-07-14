@@ -37,6 +37,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     if(interaction.commandName === "ask-mesh-ai") {
         await interaction.deferReply();
         const question = interaction.options.getString("query");
+
+        console.log("Before calling askAI function");
         const response = await askAI(question as string);
         console.log(response.answer);
         
