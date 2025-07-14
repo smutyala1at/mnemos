@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { Client, GatewayIntentBits, Events } from "discord.js";
 import { registerSlashCommands } from "./discord/registerSlashCommand";
 import { askAI } from "./services/apiService";
+import { splitMessages } from "./utils/splitMessages";
 
 
 const client = new Client({
@@ -35,8 +38,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await interaction.deferReply();
         const question = interaction.options.getString("query");
         const response = await askAI(question as string);
-        console.log(response);
-        await interaction.reply(response.answer);
+        console.log(response.answer);
+        
+        const messages = splitMessages(response.answer);
+        await interaction.editReply({ content: messages[0] });
+        for(let i=1; i < messages.length; i++) {
+            await interaction.followUp({ content: messages[i] });
+        }
     }
 })
 

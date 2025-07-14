@@ -1,0 +1,41 @@
+export function splitMessages(text: string, maxLength = 2000): string[] {
+    const lines = text.split("\n");
+    const chunks: string[] = [];
+    let currentChunk: string[] = [];
+
+    const pushChunk = () => {
+        const chunkText = currentChunk.join("\n").trim();
+        if(chunkText.length <= maxLength) {
+            chunks.push(chunkText);
+        } else {
+            let start = 0;
+            while(start < chunkText.length) {
+                chunks.push(chunkText.slice(start, start + maxLength));
+                start += maxLength;
+            }
+        }
+        currentChunk = [];
+    }
+
+    for(const line of lines) {
+        const cleanedLine = line.trimEnd();
+        const isHeading = line.startsWith("### ") || line.startsWith("## ") || line.startsWith("# ") || line.startsWith("```javascript");
+        const tentativeChunk = [...currentChunk, cleanedLine].join("\n");
+
+        if(tentativeChunk.length > maxLength) {
+            pushChunk();
+        }
+
+        if(isHeading && currentChunk.join("\n").length > maxLength * 0.85) {
+            pushChunk();
+        }
+
+        currentChunk.push(cleanedLine);
+    }
+
+    if(currentChunk.length > 0) {
+        pushChunk();
+    }
+
+    return chunks.map(chunk => chunk.replace(/\n{2,}/g, "\n"));
+}
