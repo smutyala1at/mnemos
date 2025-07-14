@@ -18,8 +18,8 @@ export function splitMessages(text: string, maxLength = 2000): string[] {
     }
 
     for(const line of lines) {
-        const cleanedLine = line.trimEnd();
-        const isHeading = line.startsWith("### ") || line.startsWith("## ") || line.startsWith("# ") || line.startsWith("```javascript");
+        let cleanedLine = line.trimEnd();
+        const isHeading = cleanedLine.startsWith("#### ") || cleanedLine.startsWith("### ") || cleanedLine.startsWith("## ") || cleanedLine.startsWith("# ") || cleanedLine.startsWith("```javascript");
         const tentativeChunk = [...currentChunk, cleanedLine].join("\n");
 
         if(tentativeChunk.length > maxLength) {
@@ -30,6 +30,11 @@ export function splitMessages(text: string, maxLength = 2000): string[] {
             pushChunk();
         }
 
+        if (cleanedLine.startsWith("#### ")) {
+            const content = cleanedLine.replace(/^####\s*/, "");
+            cleanedLine = `**${content}**`;
+        }
+        
         currentChunk.push(cleanedLine);
     }
 
