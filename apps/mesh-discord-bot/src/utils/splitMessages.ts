@@ -19,7 +19,7 @@ export function splitMessages(text: string, maxLength = 2000): string[] {
 
     for(const line of lines) {
         let cleanedLine = line.trimEnd();
-        const isHeading = cleanedLine.startsWith("#### ") || cleanedLine.startsWith("### ") || cleanedLine.startsWith("## ") || cleanedLine.startsWith("# ") || cleanedLine.startsWith("```javascript");
+        const isHeading = cleanedLine.startsWith("#### ") || cleanedLine.startsWith("### ") || cleanedLine.startsWith("## ") || cleanedLine.startsWith("# ") || cleanedLine.startsWith("```javascript") || cleanedLine.startsWith("```tsx");
         const tentativeChunk = [...currentChunk, cleanedLine].join("\n");
 
         if(tentativeChunk.length > maxLength) {
