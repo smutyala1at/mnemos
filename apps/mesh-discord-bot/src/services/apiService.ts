@@ -14,7 +14,10 @@ export async function askAI(question: string) {
         { question },
         {
             headers: {
-                "x-api-key": apiKey
+                "x-api-key": apiKey,
+                "User-Agent": "MeshJS-TwitterBot/1.0",
+                "X-Forwarded-For": "railway-bot",
+                "Content-Type": "application/json"
             }
         }
     )
