@@ -42,5 +42,5 @@ export function splitMessages(text: string, maxLength = 2000): string[] {
         pushChunk();
     }
 
-    return chunks.map(chunk => chunk.replace(/\n{2,}/g, "\n"));
+    return chunks.map(chunk => chunk.replace(/\n{3,}/g, "\n\n"));
 }
