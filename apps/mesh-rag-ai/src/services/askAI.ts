@@ -7,7 +7,7 @@ export async function askAI(question: string): Promise<string> {
         const queryEmbedding = await getEmbedding(question);
         const { data, error } = await supabase.rpc("match_documents", {
             query_embedding: queryEmbedding,
-            match_threshold: 0.8,
+            match_threshold: 0,
             match_count: 3,
         });
 
